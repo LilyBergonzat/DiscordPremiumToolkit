@@ -1,0 +1,44 @@
+{
+    "name": "discordpremiumkit",
+    "version": "1.0.0",
+    "description": "Easily handle the premium side of having a public Discord bot with DPT",
+    "main": "dist/index.js",
+    "scripts": {
+        "start": "npm run compile && npm run quickstart",
+        "quickstart": "node .",
+        "compile": "tsc -b src",
+        "clean-compile": "rm -rf dist && tsc -b src --clean && npm run compile",
+        "migrate": "npm run create-migrations && npm run apply-migrations",
+        "create-migrations": "npm run compile && cd dist && npx mikro-orm migration:create",
+        "apply-migrations": "npm run compile && cd dist && npx mikro-orm migration:up",
+        "watch": "npm run compile -- -w",
+        "test": "echo no"
+    },
+    "keywords": [],
+    "author": "Lily Bergonzat <lilybergonzat@gmail.com>",
+    "license": "ISC",
+    "imports": {
+        "#root/*": "./dist/*.js",
+        "#structures/*": "./dist/structures/*.js"
+    },
+    "dependencies": {
+        "@lilywonhalf/pretty-logger": "^2.0.2",
+        "@types/node-fetch": "^2.6.4",
+        "discord.js": "^14.12.1",
+        "dotenv": "^16.3.1",
+        "glob": "^8.0.3",
+        "tslib": "^2.6.1"
+    },
+    "devDependencies": {
+        "@types/glob": "^8.1.0",
+        "@types/node": "^20.4.8",
+        "@typescript-eslint/eslint-plugin": "^6.2.1",
+        "@typescript-eslint/parser": "^6.2.1",
+        "eslint": "^8.46.0",
+        "eslint-plugin-jsdoc": "^46.4.6",
+        "ts-node": "^10.9.1",
+        "ts-purify": "^3.0.5",
+        "typescript": "^5.1.6",
+        "typescript-eslint": "^0.0.1-alpha.0"
+    }
+}
