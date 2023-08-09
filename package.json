@@ -16,6 +16,7 @@
     },
     "keywords": [],
     "author": "Lily Bergonzat <lilybergonzat@gmail.com>",
+    "repository": "https://github.com/LilyBergonzat/DiscordPremiumToolkit/",
     "license": "ISC",
     "imports": {
         "#root/*": "./dist/*.js",
