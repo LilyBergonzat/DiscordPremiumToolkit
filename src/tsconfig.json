@@ -5,10 +5,6 @@
         "outDir": "../dist",
         "rootDir": ".",
         "baseUrl": ".",
-        "paths": {
-            "#root/*": ["*"],
-            "#structures/*": ["structures/*"]
-        },
         "composite": true
     },
     "include": [".", "./**/*.json"],

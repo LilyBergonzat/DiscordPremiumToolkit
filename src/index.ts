@@ -1,7 +1,10 @@
-import { Bootstrap, BootstrapOptions } from '#root/setup/Bootstrap';
+import { Bootstrap } from '#root/setup/Bootstrap';
+import type { BootstrapOptions } from '#root/setup/Bootstrap';
 import { Routes } from 'discord.js';
 import type { ChatInputCommandInteraction, ContextMenuCommandInteraction } from 'discord.js';
 import { EntitlementManager } from '#structures/managers/EntitlementManager';
+
+export { BootstrapOptions } from '#root/setup/Bootstrap';
 
 export function setupDiscordPremiumKit(data: BootstrapOptions) {
     new Bootstrap(data);
