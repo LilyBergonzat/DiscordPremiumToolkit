@@ -1,19 +1,22 @@
-import type { APIEntitlement, Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import type Listener from '../Listener';
-import EntitlementCreate from '#structures/listeners/EntitlementCreate';
 import { Entitlement } from '#structures/Entitlement';
-import EntitlementDelete from '#structures/listeners/EntitlementDelete';
+import type { APIEntitlement } from '#structures/Entitlement';
+import { Events } from 'discord.js';
 
 export default class Raw implements Listener {
     public run(client: Client, data: any): void {
         switch (data.t) {
             case 'ENTITLEMENT_CREATE':
+                client.emit(Events.EntitlementCreate, new Entitlement(client, data.d as APIEntitlement));
+                break;
+
             case 'ENTITLEMENT_UPDATE':
-                new EntitlementCreate().run(client, new Entitlement(data.d as APIEntitlement));
+                client.emit(Events.EntitlementUpdate, new Entitlement(client, data.d as APIEntitlement));
                 break;
 
             case 'ENTITLEMENT_DELETE':
-                new EntitlementDelete().run(client, new Entitlement(data.d as APIEntitlement));
+                client.emit(Events.EntitlementDelete, new Entitlement(client, data.d as APIEntitlement));
                 break;
         }
     }

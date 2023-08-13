@@ -4,6 +4,6 @@ import type { Entitlement } from '#structures/Entitlement';
 
 export default class EntitlementDelete implements Listener {
     public run(client: Client, entitlement: Entitlement): void {
-        client.entitlements.delete(entitlement.id);
+        client.application?.entitlements.remove(entitlement.id);
     }
 }

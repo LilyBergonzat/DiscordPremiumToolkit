@@ -1,10 +1,14 @@
-import { Client } from 'discord.js';
-import type { APIEntitlement } from 'discord.js';
+import { Client, Events } from 'discord.js';
+import type { APIEntitlement } from '#structures/Entitlement';
 import { REST } from '@discordjs/rest';
 import Logger from '@lilywonhalf/pretty-logger';
-import { EntitlementManager } from '#structures/managers/EntitlementManager';
+import { ClientApplicationEntitlementManager } from '#structures/managers/ClientApplicationEntitlementManager';
 import { Entitlement } from '#structures/Entitlement';
+import { Routes } from '#structures/Routes';
 import Raw from '#structures/listeners/Raw';
+import EntitlementCreate from '#structures/listeners/EntitlementCreate';
+import EntitlementUpdate from '#structures/listeners/EntitlementUpdate';
+import EntitlementDelete from '#structures/listeners/EntitlementDelete';
 
 export type BootstrapOptions = {
     client: Client;
@@ -32,23 +36,27 @@ export class Bootstrap {
     }
 
     private bindEvents() {
-        this.client.on('raw', new Raw().run);
+        this.client.on(Events.Raw, new Raw().run);
+        this.client.on(Events.EntitlementCreate, new EntitlementCreate().run);
+        this.client.on(Events.EntitlementUpdate, new EntitlementUpdate().run);
+        this.client.on(Events.EntitlementDelete, new EntitlementDelete().run);
     }
 
     private async fetchEntitlements() {
         const rest = new REST({ version: '10' }).setToken(this.botToken);
+        const entitlements: Array<Entitlement> = [];
+        const entitlementsData = await rest.get(
+            Routes.applicationEntitlements(this.client.user!.id)
+        ).catch(console.error);
 
-        this.client.entitlements = new EntitlementManager();
+        if (Array.isArray(entitlementsData)) {
+            Logger.info(`${entitlementsData.length} entitlements found.`);
 
-        rest.get(`/applications/${this.client.user!.id}/entitlements`)
-            .then((data: unknown) => {
-                if (Array.isArray(data)) {
-                    Logger.info(`${data.length} entitlements found.`);
+            entitlementsData.forEach((entitlementData: APIEntitlement) => {
+                entitlements.push(new Entitlement(this.client, entitlementData))
+            });
+        }
 
-                    data.forEach((entitlementData: APIEntitlement) => {
-                        this.client.entitlements.set(entitlementData.id, new Entitlement(entitlementData))
-                    });
-                }
-            }).catch(console.error);
+        this.client.application!.entitlements = new ClientApplicationEntitlementManager(this.client, entitlements);
     }
 }

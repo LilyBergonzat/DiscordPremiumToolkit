@@ -1,12 +1,13 @@
 import { Bootstrap } from '#root/setup/Bootstrap';
 import type { BootstrapOptions } from '#root/setup/Bootstrap';
-import { Routes } from 'discord.js';
+import { Routes } from '#structures/Routes';
 import type { ChatInputCommandInteraction, ContextMenuCommandInteraction } from 'discord.js';
-import { EntitlementManager } from '#structures/managers/EntitlementManager';
+import { ClientApplicationEntitlementManager } from '#structures/managers/ClientApplicationEntitlementManager';
 
-export { BootstrapOptions } from '#root/setup/Bootstrap';
+export { BootstrapOptions };
+export { Routes };
 
-export function setupDiscordPremiumKit(data: BootstrapOptions) {
+export function setupDiscordPremiumToolkit(data: BootstrapOptions) {
     new Bootstrap(data);
 }
 
@@ -21,7 +22,13 @@ export async function replyWithPremiumCTA(interaction: ChatInputCommandInteracti
 }
 
 declare module 'discord.js' {
-    export interface Client {
-        entitlements: EntitlementManager;
+    export interface ClientApplication {
+        entitlements: ClientApplicationEntitlementManager;
+    }
+
+    export enum Events {
+        EntitlementCreate = 'entitlementCreate',
+        EntitlementUpdate = 'entitlementUpdate',
+        EntitlementDelete = 'entitlementDelete'
     }
 }

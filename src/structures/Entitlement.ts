@@ -1,7 +1,8 @@
-import type { Snowflake, APIEntitlement } from 'discord.js';
+import type { Snowflake, Client } from 'discord.js';
 
 export class Entitlement {
     id: Snowflake;
+    client: Client;
     skuId: Snowflake;
     applicationId: Snowflake;
     userId: Snowflake;
@@ -15,8 +16,9 @@ export class Entitlement {
     guildId: Snowflake;
     subscriptionId?: Snowflake;
 
-    constructor(data: APIEntitlement) {
+    constructor(client: Client, data: APIEntitlement) {
         this.id = data.id;
+        this.client = client;
         this.skuId = data.sku_id;
         this.applicationId = data.application_id;
         this.userId = data.user_id;
@@ -32,20 +34,18 @@ export class Entitlement {
     }
 }
 
-declare module 'discord.js' {
-    export interface APIEntitlement {
-        id: Snowflake;
-        sku_id: Snowflake;
-        application_id: Snowflake;
-        user_id: Snowflake;
-        promotion_id?: Snowflake;
-        type: number;
-        deleted: boolean;
-        gift_code_flags: number;
-        consumed: boolean;
-        starts_at?: string;
-        ends_at?: string;
-        guild_id: Snowflake;
-        subscription_id?: Snowflake;
-    }
+export interface APIEntitlement {
+    id: Snowflake;
+    sku_id: Snowflake;
+    application_id: Snowflake;
+    user_id: Snowflake;
+    promotion_id?: Snowflake;
+    type: number;
+    deleted: boolean;
+    gift_code_flags: number;
+    consumed: boolean;
+    starts_at?: string;
+    ends_at?: string;
+    guild_id: Snowflake;
+    subscription_id?: Snowflake;
 }
