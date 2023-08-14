@@ -3,6 +3,7 @@ import type { Snowflake, Client } from 'discord.js';
 export class Entitlement {
     id: Snowflake;
     client: Client;
+    isEntitlement: boolean;
     skuId!: Snowflake;
     applicationId!: Snowflake;
     userId!: Snowflake;
@@ -19,11 +20,76 @@ export class Entitlement {
     constructor(client: Client, data: APIEntitlement) {
         this.id = data.id;
         this.client = client;
+        this.isEntitlement = true;
 
         this._patch(data);
     }
 
-    protected _patch(data: APIEntitlement) {
+    public static isEntitlement(object: any): object is Entitlement {
+        return 'isEntitlement' in object && object.isEntitlement === true;
+    }
+
+    protected _patch(data: APIEntitlement): void;
+    protected _patch(data: Entitlement): void;
+    protected _patch(data: APIEntitlement | Entitlement): void {
+        if (Entitlement.isEntitlement(data)) {
+            return this.patchFromEntitlement(data);
+        }
+
+        this.patchFromAPIData(data);
+    }
+
+    private patchFromEntitlement(entitlement: Entitlement): void {
+        if (entitlement.skuId) {
+            this.skuId = entitlement.skuId;
+        }
+
+        if (entitlement.applicationId) {
+            this.applicationId = entitlement.applicationId;
+        }
+
+        if (entitlement.userId) {
+            this.userId = entitlement.userId;
+        }
+
+        if (entitlement.promotionId) {
+            this.promotionId = entitlement.promotionId;
+        }
+
+        if (entitlement.type) {
+            this.type = entitlement.type;
+        }
+
+        if (entitlement.deleted) {
+            this.deleted = entitlement.deleted;
+        }
+
+        if (entitlement.giftCodeFlags) {
+            this.giftCodeFlags = entitlement.giftCodeFlags;
+        }
+
+        if (entitlement.consumed) {
+            this.consumed = entitlement.consumed;
+        }
+
+        if (entitlement.guildId) {
+            this.guildId = entitlement.guildId;
+        }
+
+        if (entitlement.subscriptionId) {
+            this.subscriptionId = entitlement.subscriptionId;
+        }
+
+        if (entitlement.startsAt) {
+            this.startsAt = entitlement.startsAt;
+        }
+
+        if (entitlement.endsAt) {
+            this.endsAt = entitlement.endsAt;
+        }
+    }
+
+    private patchFromAPIData(data: APIEntitlement): void {
         if ('sku_id' in data) {
             this.skuId = data.sku_id;
         }
