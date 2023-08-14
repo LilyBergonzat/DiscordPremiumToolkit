@@ -3,34 +3,74 @@ import type { Snowflake, Client } from 'discord.js';
 export class Entitlement {
     id: Snowflake;
     client: Client;
-    skuId: Snowflake;
-    applicationId: Snowflake;
-    userId: Snowflake;
+    skuId!: Snowflake;
+    applicationId!: Snowflake;
+    userId!: Snowflake;
     promotionId?: Snowflake;
-    type: number;
-    deleted: boolean;
-    giftCodeFlags: number;
-    consumed: boolean;
+    type!: number;
+    deleted!: boolean;
+    giftCodeFlags!: number;
+    consumed!: boolean;
     startsAt?: Date;
     endsAt?: Date;
-    guildId: Snowflake;
+    guildId?: Snowflake;
     subscriptionId?: Snowflake;
 
     constructor(client: Client, data: APIEntitlement) {
         this.id = data.id;
         this.client = client;
-        this.skuId = data.sku_id;
-        this.applicationId = data.application_id;
-        this.userId = data.user_id;
-        this.promotionId = data.promotion_id;
-        this.type = data.type;
-        this.deleted = data.deleted;
-        this.giftCodeFlags = data.gift_code_flags;
-        this.consumed = data.consumed;
-        this.startsAt = data.starts_at ? new Date(data.starts_at) : undefined;
-        this.endsAt = data.ends_at ? new Date(data.ends_at) : undefined;
-        this.guildId = data.guild_id;
-        this.subscriptionId = data.subscription_id;
+
+        this._patch(data);
+    }
+
+    protected _patch(data: APIEntitlement) {
+        if ('sku_id' in data) {
+            this.skuId = data.sku_id;
+        }
+
+        if ('application_id' in data) {
+            this.applicationId = data.application_id;
+        }
+
+        if ('user_id' in data) {
+            this.userId = data.user_id;
+        }
+
+        if ('promotion_id' in data) {
+            this.promotionId = data.promotion_id;
+        }
+
+        if ('type' in data) {
+            this.type = data.type;
+        }
+
+        if ('deleted' in data) {
+            this.deleted = data.deleted;
+        }
+
+        if ('gift_code_flags' in data) {
+            this.giftCodeFlags = data.gift_code_flags;
+        }
+
+        if ('consumed' in data) {
+            this.consumed = data.consumed;
+        }
+
+        if ('guild_id' in data) {
+            this.guildId = data.guild_id;
+        }
+
+        if ('subscription_id' in data) {
+            this.subscriptionId = data.subscription_id;
+        }
+
+        if ('starts_at' in data) {
+            this.startsAt = data.starts_at ? new Date(data.starts_at) : undefined;
+        }
+
+        if ('ends_at' in data) {
+            this.endsAt = data.ends_at ? new Date(data.ends_at) : undefined;
+        }
     }
 }
 
