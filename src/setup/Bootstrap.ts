@@ -1,8 +1,9 @@
-import { Client, Events } from 'discord.js';
+import { Client } from 'discord.js';
 import { REST } from '@discordjs/rest';
 import Logger from '@lilywonhalf/pretty-logger';
 import { ClientApplicationEntitlementManager } from '#structures/managers/ClientApplicationEntitlementManager';
 import { Routes } from '#structures/Routes';
+import { Events } from '#structures/Events';
 import Raw from '#structures/listeners/Raw';
 import EntitlementCreate from '#structures/listeners/EntitlementCreate';
 import EntitlementUpdate from '#structures/listeners/EntitlementUpdate';

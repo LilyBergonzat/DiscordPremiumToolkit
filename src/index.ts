@@ -25,10 +25,4 @@ declare module 'discord.js' {
     export interface ClientApplication {
         entitlements: ClientApplicationEntitlementManager;
     }
-
-    export enum Events {
-        EntitlementCreate = 'entitlementCreate',
-        EntitlementUpdate = 'entitlementUpdate',
-        EntitlementDelete = 'entitlementDelete'
-    }
 }
