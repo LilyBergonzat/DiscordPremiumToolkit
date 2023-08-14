@@ -4,9 +4,9 @@
 
 When one of your Discord bots is public, it can also become paid, have premium features directly integrated into Discord. If you have a bot that has premium features, handling the data of who subscribed for what and what guild should have which level of features can be tricky.
 
-Discord Premium Toolkit is there to make all of that a bit simpler. Just add the dependency to your bot project, and as soon as you get the "ready" event from the client, call the setupDiscordPremiumKit function as such:
+Discord Premium Toolkit is there to make all of that a bit simpler. Just add the dependency to your bot project, and as soon as you get the "ready" event from the client, call the setupDiscordPremiumToolkit function as such:
 ```ts
-setupDiscordPremiumKit({ client, botToken });
+setupDiscordPremiumToolkit({ client, botToken });
 ```
 `client` is the instance of the Discord client, and `botToken` is the token of your bot.
 
