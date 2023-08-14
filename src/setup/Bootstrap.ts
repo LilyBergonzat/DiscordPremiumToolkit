@@ -1,9 +1,7 @@
 import { Client, Events } from 'discord.js';
-import type { APIEntitlement } from '#structures/Entitlement';
 import { REST } from '@discordjs/rest';
 import Logger from '@lilywonhalf/pretty-logger';
 import { ClientApplicationEntitlementManager } from '#structures/managers/ClientApplicationEntitlementManager';
-import { Entitlement } from '#structures/Entitlement';
 import { Routes } from '#structures/Routes';
 import Raw from '#structures/listeners/Raw';
 import EntitlementCreate from '#structures/listeners/EntitlementCreate';
@@ -44,19 +42,13 @@ export class Bootstrap {
 
     private async fetchEntitlements() {
         const rest = new REST({ version: '10' }).setToken(this.botToken);
-        const entitlements: Array<Entitlement> = [];
         const entitlementsData = await rest.get(
             Routes.applicationEntitlements(this.client.user!.id)
         ).catch(console.error);
 
-        if (Array.isArray(entitlementsData)) {
-            Logger.info(`${entitlementsData.length} entitlements found.`);
-
-            entitlementsData.forEach((entitlementData: APIEntitlement) => {
-                entitlements.push(new Entitlement(this.client, entitlementData))
-            });
-        }
-
-        this.client.application!.entitlements = new ClientApplicationEntitlementManager(this.client, entitlements);
+        this.client.application!.entitlements = new ClientApplicationEntitlementManager(
+            this.client,
+            Array.isArray(entitlementsData) ? entitlementsData : []
+        );
     }
 }
