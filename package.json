@@ -1,6 +1,6 @@
 {
     "name": "discordpremiumtoolkit",
-    "version": "1.1.2",
+    "version": "1.1.3",
     "description": "Easily handle the premium side of having a public Discord bot with DPT",
     "main": "dist/index.js",
     "scripts": {
