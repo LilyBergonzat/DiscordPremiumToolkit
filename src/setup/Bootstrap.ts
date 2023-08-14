@@ -34,7 +34,7 @@ export class Bootstrap {
     }
 
     private bindEvents() {
-        this.client.on(Events.Raw, new Raw().run);
+        this.client.on(Events.Raw, data => new Raw().run(this.client, data));
         this.client.on(Events.EntitlementCreate, new EntitlementCreate().run);
         this.client.on(Events.EntitlementUpdate, new EntitlementUpdate().run);
         this.client.on(Events.EntitlementDelete, new EntitlementDelete().run);
