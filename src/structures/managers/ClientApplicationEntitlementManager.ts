@@ -23,20 +23,28 @@ export class ClientApplicationEntitlementManager
             : this.fetchMany({ cache, force });
     }
 
-    public getByUserId(userId: Snowflake): Entitlement | undefined {
-        return this.cache.find((entitlement: Entitlement) => entitlement.userId === userId);
+    public getByUserId(userId: Snowflake): Collection<Snowflake, Entitlement> {
+        return this.cache.filter((entitlement: Entitlement) => entitlement.userId === userId);
     }
 
-    public getByGuildId(guildId: Snowflake): Entitlement | undefined {
-        return this.cache.find((entitlement: Entitlement) => entitlement.guildId === guildId);
+    public getByGuildId(guildId: Snowflake): Collection<Snowflake, Entitlement> {
+        return this.cache.filter((entitlement: Entitlement) => entitlement.guildId === guildId);
+    }
+
+    public getValidEntitlementByUserId(userId: Snowflake): Entitlement | undefined {
+        return this.getByUserId(userId).find(this.isEntitlementValid);
+    }
+
+    public getValidEntitlementByGuildId(guildId: Snowflake): Entitlement | undefined {
+        return this.getByGuildId(guildId).find(this.isEntitlementValid);
     }
 
     public isGuildSubscribed(guildId: Snowflake): boolean {
-        return this.isEntitlementValid(this.getByGuildId(guildId));
+        return !!this.getValidEntitlementByUserId(guildId);
     }
 
     public isUserSubscribed(userId: Snowflake): boolean {
-        return this.isEntitlementValid(this.getByUserId(userId));
+        return !!this.getValidEntitlementByGuildId(userId);
     }
 
     public add(entitlement: Entitlement) {
