@@ -39,12 +39,12 @@ export class ClientApplicationEntitlementManager
         return this.getByGuildId(guildId).find(this.isEntitlementValid);
     }
 
-    public isGuildSubscribed(guildId: Snowflake): boolean {
-        return !!this.getValidEntitlementByUserId(guildId);
+    public isUserSubscribed(userId: Snowflake): boolean {
+        return !!this.getValidEntitlementByUserId(userId);
     }
 
-    public isUserSubscribed(userId: Snowflake): boolean {
-        return !!this.getValidEntitlementByGuildId(userId);
+    public isGuildSubscribed(guildId: Snowflake): boolean {
+        return !!this.getValidEntitlementByGuildId(guildId);
     }
 
     public add(entitlement: Entitlement) {
